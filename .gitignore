@@ -1,0 +1,6 @@
+.gradle
+/build/
+/bin/
+/target/
+**/*.DS_Store
+/sonar-project.properties

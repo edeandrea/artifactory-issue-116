@@ -21,8 +21,8 @@ publishing {
 	publications {
 		mainJava(MavenPublication) {
 			artifactId 'some-artifact'
-			from project.components.java
-			artifact project.tasks['dbZip']
+			from components.java
+			artifact dbZip
 		}
 	}
 }

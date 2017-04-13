@@ -7,11 +7,8 @@ plugins {
 group 'test'
 version '1.0'
 
-repositories {
-	jcenter()
-}
-
 dependencies {
+	compile 'org.apache.commons:commons-collections4:4.1'
 	testCompile 'junit:junit:4.12'
 }
 
@@ -32,4 +29,37 @@ publishing {
 
 artifactoryPublish {
 	publications 'mainJava'
+}
+
+artifactory {
+	contextUrl = 'http://jcenter.bintray.com'
+	
+	publish {
+		repository {
+			repoKey = 'mypublishrepo'
+			username = 'user'
+			password = 'pwd'
+		}
+		
+		defaults {
+			properties = ['Deployed By': System.properties['user.name']]
+			publishBuildInfo = true
+			publishArtifacts = true
+			publishPom = true
+			publishIvy = false
+		}
+	}
+	
+	resolve {
+		repository {
+			repoKey = '/'
+			maven = true
+		}
+	}
+	
+	clientConfig.includeEnvVars = true
+	clientConfig.envVarsExcludePatterns = '*pwd*,*password*,*PWD*,*PASSWORD*,*secret*,*SECRET*,*key*,*KEY*,sonar.login'
+	clientConfig.info.setBuildName('some-artifact')
+	clientConfig.info.setBuildNumber(version)
+	clientConfig.info.buildUrl = 'build url'
 }

@@ -6,7 +6,6 @@ import org.gradle.api.Project
 final class TestPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
-		project.apply plugin: 'maven-publish'
 		project.apply plugin: 'com.jfrog.artifactory'
 
 		project.configure(project) {

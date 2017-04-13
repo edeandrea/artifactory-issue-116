@@ -36,7 +36,6 @@ class TestPluginSpec extends Specification {
 			runProjectAfterEvaluate project
 
 		then:
-			project.plugins.hasPlugin 'maven-publish'
 			project.plugins.hasPlugin 'com.jfrog.artifactory'
 			project.ext.propertyName == 'value'
 	}

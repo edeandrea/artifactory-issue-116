@@ -1,15 +1,32 @@
 plugins {
-	id 'java'
+	id 'java-gradle-plugin'
+	id 'groovy'
 	id 'maven-publish'
-	id 'com.jfrog.artifactory' version '4.4.9'
+	id 'eclipse'
+	id 'com.jfrog.artifactory' version '4.4.15'
 }
 
 group 'test'
 version '1.0'
 
 dependencies {
+	compile 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.9'
 	compile 'org.apache.commons:commons-collections4:4.1'
 	testCompile 'junit:junit:4.12'
+	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
+}
+
+configurations {
+	all*.exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+}
+
+gradlePlugin {
+	plugins {
+		testPlugin {
+			id = 'org.mycompany.gradle.testPlugin'
+			implementationClass = 'org.mycompany.gradle.TestPlugin'
+		}
+	}
 }
 
 task('dbZip', type: Zip, group: 'Build', description: 'Packages up the DB scripts') {
@@ -62,4 +79,23 @@ artifactory {
 	clientConfig.info.setBuildName('some-artifact')
 	clientConfig.info.setBuildNumber(version)
 	clientConfig.info.buildUrl = 'build url'
+}
+
+tasks.withType(Test) {
+	testLogging {
+		displayGranularity -1
+		minGranularity -1
+		maxGranularity -1
+		showStandardStreams true
+		showStackTraces true
+		showExceptions true
+		showCauses true
+		exceptionFormat "full"
+		stackTraceFilters "truncate", "groovy"
+		events "passed", "failed", "skipped"
+	}
+
+	reports {
+		junitXml.outputPerTestCase = true
+	}
 }

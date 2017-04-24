@@ -3,6 +3,7 @@ package org.mycompany.gradle
 import spock.lang.Specification
 
 import org.gradle.api.Project
+import org.gradle.api.internal.project.ProjectStateInternal
 import org.gradle.testfixtures.ProjectBuilder
 
 import org.junit.Rule
@@ -24,7 +25,7 @@ class TestPluginSpec extends Specification {
 	}
 
 	def runProjectAfterEvaluate(Project project) {
-		project.projectEvaluationBroadcaster.afterEvaluate project, null
+		project.projectEvaluationBroadcaster.afterEvaluate project, new ProjectStateInternal()
 	}
 
 	def "Test for ext property"() {
